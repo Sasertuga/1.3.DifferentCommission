@@ -13,6 +13,7 @@ class DifferentCommissionKtTest {
         assertEquals(600, result)
     }
 
+
     @Test
     fun commissionCalculate_else() {
         val sum = 0
