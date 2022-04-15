@@ -63,4 +63,14 @@ class DifferentCommissionKtTest {
 
         assertEquals(0, result)
     }
+
+    @Test
+    fun commissionForTransfer() {
+        val sum = 15000
+        val card = 0.1
+
+        val result = commissionForTransfer(sumTransfer = sum, typeCard = card)
+
+        assertEquals(0, result)
+    }
 }
