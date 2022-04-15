@@ -7,35 +7,40 @@ const val VISA = "Visa"
 const val MIR = "Mir"
 const val VK_PAY = "VK Pay"
 
+const val COMMISSION_MASTERCARD_AND_MAESTRO = 0.6
+const val COMMISSION_VISA_AND_MIR = 0.75
+const val COMMISSION_VK_PAY = 0.0
+
 fun main() {
-    commissionForTransfer(VK_PAY, 15000)
-    commissionForTransfer(MASTERCARD, 7500)
-    commissionForTransfer(MIR, 40)
+    println("Сумма перевода ${printSumTransfer(100)} рублей. Комиссия за перевод по карте $MAESTRO : ${commissionForTransfer(100, COMMISSION_MASTERCARD_AND_MAESTRO)} копеек")
 }
 
-fun commissionForTransfer(typeCard: String, sumTransfer: Int) {
+fun printSumTransfer(sumTransfer: Int): Int {
+   return sumTransfer
+}
 
-    val sum = if (sumTransfer != 0 && sumTransfer > 0) sumTransfer * 100 else return
+fun commissionCalculate(sumTransfer: Int, typeCard: Double): Int {
+    val sum = if (sumTransfer != 0 && sumTransfer > 0) sumTransfer * 100 else 0
+    return (sum * typeCard / 100).toInt()
+}
 
-    val commissionPayment: Double = when (typeCard) {
-        MASTERCARD, MAESTRO -> 0.6
-        VISA, MIR -> 0.75
-        else -> 0.0
-    }
-
-    val transfer = (sum * commissionPayment / 100).toInt()
-
-    val verification = if (sum <= MAX_TRANSFER_IN_DAY * 100) {
-        when (typeCard) {
-            MASTERCARD, MAESTRO -> transfer + 2000
-            VISA, MIR -> if (transfer < 35) 3500 else transfer
-            VK_PAY -> if (sum <= MAX_TRANSFER_VK_PAY * 100) transfer else error("Не больше 15 000 рублей за раз")
-            else -> 0
+fun commissionForTransfer(sumTransfer: Int, typeCard: Double): Number {
+    if (sumTransfer * 100 <= MAX_TRANSFER_IN_DAY * 100) {
+        return when (typeCard) {
+            COMMISSION_MASTERCARD_AND_MAESTRO -> commissionCalculate(sumTransfer, typeCard) + 2000
+            COMMISSION_VISA_AND_MIR -> if (commissionCalculate(sumTransfer, typeCard) > 35) commissionCalculate(
+                sumTransfer,
+                typeCard
+            ) else 3500
+            COMMISSION_VK_PAY -> if (sumTransfer * 100 <= MAX_TRANSFER_VK_PAY * 100) commissionCalculate(
+                sumTransfer,
+                typeCard
+            ) else error("Не больше 15 000 рублей за раз")
+            else -> error("неправильный тип карты")
         }
-    } else error("Превышен максимальный лимит в 150 000 рублей")
-
-
-    println("Сумма перевода: $sum копеек. Комиссия за перевод по $typeCard : $verification копеек")
+    } else error("Превышен суточный лимит")
 }
+
+
 
 
