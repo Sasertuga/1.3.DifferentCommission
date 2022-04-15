@@ -71,6 +71,6 @@ class DifferentCommissionKtTest {
 
         val result = commissionForTransfer(sumTransfer = sum, typeCard = card)
 
-        assertEquals(0, result)
+        assertEquals(1, result)
     }
 }
