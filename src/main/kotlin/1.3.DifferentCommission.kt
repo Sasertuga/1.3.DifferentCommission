@@ -12,11 +12,14 @@ const val COMMISSION_VISA_AND_MIR = 0.75
 const val COMMISSION_VK_PAY = 0.0
 
 fun main() {
-    println("Сумма перевода ${printSumTransfer(100)} рублей. Комиссия за перевод по карте $MAESTRO : ${commissionForTransfer(100, COMMISSION_MASTERCARD_AND_MAESTRO)} копеек")
-}
-
-fun printSumTransfer(sumTransfer: Int): Int {
-   return sumTransfer
+    println(
+        "Комиссия за перевод по карте $MAESTRO : ${
+            commissionForTransfer(
+                100,
+                COMMISSION_MASTERCARD_AND_MAESTRO
+            )
+        } копеек"
+    )
 }
 
 fun commissionCalculate(sumTransfer: Int, typeCard: Double): Int {
